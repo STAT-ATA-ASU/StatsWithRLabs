@@ -325,7 +325,7 @@ Type your answer here and delete this sentence.
 
 </div>
 
-13. Suppose you're hired by the local government to estimate the proportion of residents that attend a religious service on a weekly basis. According to the guidelines, the estimate must have a margin of error no greater than 1% with 95% confidence. You have no idea what to expect for $p$. How many people would you have to sample to ensure that you are within the guidelines? <br><br> *Hint:* Refer to your plot of the relationship between $p$ and margin of error. Do not use the data set to answer this question.
+13. Suppose you're hired by the local government to estimate the proportion of residents who attend a religious service on a weekly basis. According to the guidelines, the estimate must have a margin of error no greater than 1% with 95% confidence. You have no idea what to expect for $p$. How many people would you have to sample to ensure that you are within the guidelines? <br><br> *Hint:* Refer to your plot of the relationship between $p$ and margin of error. Do not use the data set to answer this question.
 <ol>
 <li> 2401 people </li>
 <li> At least 2401 people </li>

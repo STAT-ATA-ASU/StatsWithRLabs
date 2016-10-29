@@ -116,7 +116,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Foundations for inference - Confidence intervals</h1>
-<h4 class="date"><em>Last compiled: Jul 10, 2016</em></h4>
+<h4 class="date"><em>Last compiled: Oct 07, 2016</em></h4>
 
 </div>
 
@@ -192,8 +192,7 @@ t_star_95</code></pre>
   summarise(lower = mean(area) - t_star_95 * (sd(area) / sqrt(n)),
             upper = mean(area) + t_star_95 * (sd(area) / sqrt(n)))
 CI</code></pre>
-<pre><code>Source: local data frame [1 x 2]
-
+<pre><code># A tibble: 1 × 2
     lower    upper
     &lt;dbl&gt;    &lt;dbl&gt;
 1 1338.99 1556.077</code></pre>
@@ -283,8 +282,7 @@ The sample shape must be nearly normal.
 <p>Let’s view the first five intervals:</p>
 <pre class="r"><code>ci %&gt;%
   slice(1:5)</code></pre>
-<pre><code>Source: local data frame [5 x 3]
-
+<pre><code># A tibble: 5 × 3
   replicate    lower    upper
       &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;
 1         1 1264.046 1532.854
@@ -391,12 +389,12 @@ other attached packages:
 [1] ggplot2_2.1.0 dplyr_0.5.0   statsr_0.1-1 
 
 loaded via a namespace (and not attached):
- [1] Rcpp_0.12.5      knitr_1.13.2     magrittr_1.5     munsell_0.4.3   
+ [1] Rcpp_0.12.7      knitr_1.14       magrittr_1.5     munsell_0.4.3   
  [5] colorspace_1.2-6 xtable_1.8-2     R6_2.1.2         highr_0.6       
- [9] plyr_1.8.4       stringr_1.0.0    tools_3.2.2      grid_3.2.2      
-[13] gtable_0.2.0     DBI_0.4-1        miniUI_0.1.1     htmltools_0.3.5 
-[17] lazyeval_0.2.0   assertthat_0.1   yaml_2.1.13      digest_0.6.9    
-[21] tibble_1.0       bookdown_0.0.77  shiny_0.13.2     formatR_1.4     
+ [9] plyr_1.8.4       stringr_1.1.0    tools_3.2.2      grid_3.2.2      
+[13] gtable_0.2.0     DBI_0.5-1        miniUI_0.1.1     htmltools_0.3.5 
+[17] lazyeval_0.2.0   assertthat_0.1   yaml_2.1.13      digest_0.6.10   
+[21] tibble_1.2       bookdown_0.1     shiny_0.13.2     formatR_1.4     
 [25] evaluate_0.9     mime_0.4         rmarkdown_1.0    labeling_0.3    
 [29] stringi_1.1.1    scales_0.4.0     httpuv_1.3.3    </code></pre>
 </div>
