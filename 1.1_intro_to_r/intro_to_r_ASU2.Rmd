@@ -10,8 +10,8 @@ date: 'Last compiled: `r format(Sys.time(), "%b %d, %Y")`'
 This is a derivative of an [OpenIntro](https://www.openintro.org/stat/labs.php) lab, and is released under a [Attribution-NonCommercial-ShareAlike 3.0 United States](https://creativecommons.org/licenses/by-nc-sa/3.0/us/) license.
 </div>
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(comment = NA, fig.align = "center")
+```{r label = "setup", include=FALSE}
+knitr::opts_chunk$set(comment = NA, fig.align = "center", message = FALSE, warning = FALSE)
 ```
 
 <div id="instructions">
@@ -25,7 +25,7 @@ is a convenient interface.
 
 As the labs progress, you are encouraged to explore beyond what the labs dictate;
 a willingness to experiment will make you a much better programmer. Before we 
-get to that stage, however, you need to build some basic fluency in R. Today we
+get to that stage; however, you need to build some basic fluency in R. Today we
 begin with the fundamental building blocks of R and RStudio: the interface, 
 reading in data, and basic commands.
 
@@ -68,7 +68,7 @@ Next, you need to load the packages in your working environment. We do this with
 the `library` function. Note that you only need to **install** packages once, but
 you need to **load** them each time you relaunch RStudio.
 
-```{r load-packages, message = FALSE}
+```{r label = "load-packages", message = FALSE}
 library(dplyr)
 library(ggplot2)
 library(statsr)
@@ -89,7 +89,7 @@ of each lab.
 
 To get you started, run the following command to load the data.
 
-```{r load-abrbuthnot-data}
+```{r label = "load-abrbuthnot-data"}
 data(arbuthnot)
 ```
 
@@ -102,8 +102,7 @@ corner of the pane, or
 - type the code in the console.
 
 This command instructs R to load some data. The Arbuthnot data records male and
-female christenings (births) in London from 1629 to 1710.  
-You should see that the workspace 
+female christenings (births) in London from 1629 to 1710.    You should see that the workspace 
 area in the upper right hand corner of the RStudio window now lists a data set
 called `arbuthnot` that has 82 observations on 3 variables. As you interact 
 with R, you will create a series of objects.  Sometimes you load them as we have
@@ -116,7 +115,7 @@ boys to newborn girls, so he gathered the baptism records for children born in
 London for every year from 1629 to 1710. We can take a look at the data by 
 typing its name into the console.
 
-```{r view-data}
+```{r label = "view-data"}
 arbuthnot
 ```
 
@@ -142,7 +141,7 @@ Arbuthnot's data in a kind of spreadsheet or table called a *data frame*.
 
 You can see the dimensions of this data frame by typing:
 
-```{r dim-data}
+```{r label = "dim-data"}
 dim(arbuthnot)
 ```
 
@@ -165,25 +164,25 @@ names(arbuthnot)
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 1 here and delete this sentence.
 
 
 </div>
 
 <div id="exercise">
-**Exercise**: What years are included in this dataset? Hint: Take a look at the
+**Exercise 1**: What years are included in this dataset? Hint: Take a look at the
 year variable in the Data Viewer to answer this question.
 </div>
 
 <div id="answer">
-Type your answer here and delete this sentence. 
+Type your answer for Exercise 1 here and delete this sentence. 
 
 
 </div>
 
 You should see that the data frame contains the columns `year`,  `boys`, and 
 `girls`. At this point, you might notice that many of the commands in R look a 
-lot like functions from math class; that is, invoking R commands means supplying
+lot like functions from mathematics; that is, invoking R commands means supplying
 a function with some number of arguments. The `dim` and `names` commands, for 
 example, each took a single argument, the name of a data frame.
 
@@ -211,7 +210,7 @@ in the code chunks provided in the R Markdown (Rmd) document for the lab, and
 Let's start to examine the data a little more closely. We can access the data in
 a single column of a data frame separately using a command like
 
-```{r view-boys}
+```{r label = "view-boys"}
 arbuthnot$boys
 ```
 
@@ -229,12 +228,12 @@ variable that comes after me."
 </ol>
 
 ```{r extract-counts-of-girls-born}
-# type your code for the Question 2 here, and Knit
+# Type your code for the Question 2 here, and Knit.
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 2 here and delete this sentence.
 
 
 </div>
@@ -251,7 +250,7 @@ side of the printout to indicate locations within the vector. For example, in th
 R has some powerful functions for making graphs. We can create a simple plot 
 of the number of girls baptized per year with the command
 
-```{r plot-girls-vs-year, fig.cap = "Total number of girls baptized by year"}
+```{r label = "plot-girls-vs-year", fig.cap = "Total number of girls baptized by year"}
 ggplot(data = arbuthnot, aes(x = year, y = girls)) +
   geom_point()
 ```
@@ -268,7 +267,7 @@ Before we review the code for this plot, let's summarize the trends we see in Fi
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Question 3 here and delete this sentence.
 
 
 </div>
@@ -290,7 +289,7 @@ does and learn the arguments that are available to you, just type in a question 
 followed by the name of the function that you're interested in. Try the following in
 your console:
 
-```{r plot-help, tidy = FALSE}
+```{r label = "plot-help", eval = FALSE}
 ?ggplot
 ```
 
@@ -310,7 +309,7 @@ Now, suppose we want to plot the total number of baptisms. To compute this, we
 could use the fact that R is really just a big calculator. We can type in 
 mathematical expressions like
 
-```{r calc-total-bapt-numbers}
+```{r label = "calc-total-bapt-numbers"}
 5218 + 4683
 ```
 
@@ -318,7 +317,7 @@ to see the total number of baptisms in 1629. We could repeat this once for each
 year, but there is a faster way. If we add the vector for baptisms for boys to 
 that of girls, R will compute all sums simultaneously.
 
-```{r calc-total-bapt-vars}
+```{r label = "calc-total-bapt-vars"}
 arbuthnot$boys + arbuthnot$girls
 ```
 
@@ -331,7 +330,7 @@ look at a few of them and verify that they are right.
 We'll be using this new vector to generate some plots, so we'll want to save it 
 as a permanent column in our data frame.
 
-```{r calc-total-bapt-vars-save}
+```{r label = "calc-total-bapt-vars-save"}
 arbuthnot <- arbuthnot %>%
   mutate(total = boys + girls)
 ```
@@ -367,32 +366,36 @@ that data set with the new mutated column.
 
 We can create Figure \@ref(fig:plot-total-vs-year-line), a plot of the total number of baptisms per year with the following command.
 
-```{r plot-total-vs-year-line, fig.cap= "Total number of baptisms per year"}
+```{r label = "plot-total-vs-year-line", fig.cap= "Total number of baptisms per year"}
 ggplot(data = arbuthnot, aes(x = year, y = total)) +
-  geom_line()
+  geom_line() + 
+  theme_bw()
 ```
 
 Note that using `geom_line()` instead of `geom_point()` results in a line plot instead
 of a scatter plot. You want both? Just layer them on:
 
-```{r plot-total-vs-year-line-and-point}
+```{r label = "plot-total-vs-year-line-and-point"}
 ggplot(data = arbuthnot, aes(x = year, y = total)) +
   geom_line() +
-  geom_point()
+  geom_point() + 
+  theme_bw()
 ```
 
 <div id="exercise">
-**Exercise**: Create a plot of the proportion of boys born over time. What 
+**Exercise 2**: Create a plot of the proportion of boys born over time. What 
 do you see? 
 </div>
 
-```{r plot-proportion-of-boys-over-time}
-# type your code for the Exercise here, and Knit
+
+
+```{r label = "plot-proportion-of-boys-over-time", fig.cap="Proportion of boys born over time"}
+# Type your code for Exercise 2 here, and Knit.
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Exercise 2 and delete this sentence.
 
 
 </div>
@@ -402,9 +405,10 @@ division, you can ask R to make comparisons like greater than, `>`, less than,
 `<`, and equality, `==`. For example, we can ask if boys outnumber girls in each 
 year with the expression
 
-```{r boys-more-than-girls}
+```{r label = "boys-more-than-girls"}
 arbuthnot <- arbuthnot %>%
   mutate(more_boys = boys > girls)
+DT::datatable(arbuthnot)
 ```
 
 This command add a new variable to the `arbuthnot` data frame containing the values
@@ -425,7 +429,7 @@ analysis of Arbuthnot's baptism data. Next you will do a similar analysis,
 but for present day birth records in the United States. Load the 
 present day data with the following command.
 
-```{r load-present-data}
+```{r label = "load-present-data"}
 data(present)
 ```
 
@@ -442,29 +446,31 @@ your workspace.
 </ol>
 
 ```{r variables-in-present}
-# type your code for Question 4 here, and Knit
+# Type your code for Question 4 here, and Knit.
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 4 here and delete this sentence.
 
 
 </div>
 
 
 <div id="exercise">
-**Exercise**: What years are included in this dataset? **Hint:** Use the `range` 
+**Exercise 3**: What years are included in this dataset? **Hint:** Use the `range` 
 function and `present$year` as its argument.
 </div>
 
 ```{r years-in-present-data}
-# type your code for Exercise here, and Knit
+# Type your code for Exercise 3 here, and Knit.
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Exercise 3 here and delete this sentence.
 
 
 </div>
@@ -480,13 +486,15 @@ decreased over time.
 <li> False </li>
 </ol>
 
-```{r prop-boys-over-time}
-# type your code for Question 5 here, and Knit
+
+```{r label = "prop-boys-over-time", fig.cap = "Proportion of boys born over time for the `present` data set"}
+# Type your code for Question 5 here, and Knit.
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 5 here and delete this sentence.
+
 
 
 </div>
@@ -503,15 +511,16 @@ variable which of the following statements is true?
 <li> Half of the years there are more boys born, and the other half more girls born. </li>
 </ol>
 
-```{r more-boys-per-year}
-# type your code for Question 6 here, and Knit
+
+```{r label = "more-boys-per-year"}
+# Type your code for Question 6 here, and Knit.
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 6 here and delete this sentence.
 
-
+`B.` - Every year there are more boys born than girls.
 </div>
 
 7. Calculate the boy-to-girl ratio each year, and store these values in a new variable called `prop_boy_girl` in the `present` dataset. Plot these values over time. Which of the following best describes the trend? 
@@ -523,13 +532,16 @@ Type your answer here and delete this sentence.
 <li> There is an initial decrease in the boy-to-girl ratio born but this number appears to level around 1960 and remain constant since then. </li>
 </ol>
 
-```{r prop-boy-girl-over-time}
-# type your code for Question 7 here, and Knit
+
+
+
+```{r label = "prop-boy-girl-over-time", fig.cap = "Ratio of boys to girls over time"}
+# Type your code for Question 7 here, and Knit.
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 7 here and delete this sentence.
 
 
 </div>
@@ -547,13 +559,13 @@ descending order).
 <li> 2007 </li>
 </ol>
 
-```{r most-total-births}
-# type your code for Question 8 here
+```{r label = "most-total-births"}
+# Type your code for Question 8 here, and Knit.
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 8 here and delete this sentence.
 
 
 </div>

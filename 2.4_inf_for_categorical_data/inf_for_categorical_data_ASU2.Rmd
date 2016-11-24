@@ -10,8 +10,8 @@ date: 'Last compiled: `r format(Sys.time(), "%b %d, %Y")`'
 This is a derivative of an [OpenIntro](https://www.openintro.org/stat/labs.php) lab, and is released under a [Attribution-NonCommercial-ShareAlike 3.0 United States](https://creativecommons.org/licenses/by-nc-sa/3.0/us/) license.
 </div>
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(comment = NA, fig.align = "center")
+```{r label = "setup", include=FALSE}
+knitr::opts_chunk$set(comment = NA, fig.align = "center", message = FALSE, warning = FALSE)
 ```
 
 <div id="instructions">
@@ -30,7 +30,7 @@ companion package for this course, `statsr`.
 
 Let's load the packages.
 
-```{r load-packages, message=FALSE}
+```{r label = "load-packages"}
 library(statsr)
 library(dplyr)
 library(ggplot2)
@@ -52,7 +52,7 @@ Take a moment to review the report then address the following questions.
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Question 1 here and delete this sentence.
 
 
 </div>
@@ -66,7 +66,8 @@ Type your answer here and delete this sentence.
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Queston 2 here and delete this sentence.
+
 
 
 </div>
@@ -78,7 +79,8 @@ Type your answer here and delete this sentence.
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Question 3 here and delete this sentence.
+
 
 
 </div>
@@ -90,7 +92,8 @@ Type your answer here and delete this sentence.
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Question 4 here and delete this sentence.
+
 
 
 </div>
@@ -99,7 +102,7 @@ Type your answer here and delete this sentence.
 
 Turn your attention to Table 6 (pages 15 and 16), which reports the sample size and response percentages for all 57 countries. While this is a useful format to summarize the data, we will base our analysis on the original data set of individual responses to the survey. Load this data set into R with the following command.
 
-```{r load-data}
+```{r label = "load-data"}
 data(atheism)
 ```
 
@@ -111,7 +114,8 @@ data(atheism)
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Question 5 here and delete this sentence.
+
 
 
 </div>
@@ -124,7 +128,8 @@ Type your answer here and delete this sentence.
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Question 6 here and delete this sentence.
+
 
 
 
@@ -134,9 +139,9 @@ To investigate the link between these two ways of organizing this data, take a l
 
 Create a new dataframe called `us12` that contains only the rows in `atheism` associated with respondents to the 2012 survey from the United States:
 
-```{r us-atheism}
+```{r label = "us-atheism"}
 us12 <- atheism %>%
-  filter(nationality == "United States" , atheism$year == "2012")
+  filter(nationality == "United States", year == "2012")
 ```
 
 
@@ -145,8 +150,9 @@ us12 <- atheism %>%
 <li> True </li> 
 <li> False </li>
 </ol>
-```{r perc-atheist-us12}
-# type your code for Question 7 here, and Knit
+
+```{r lABEL = "perc-atheist-us12"}
+# Type your code for Question 7 here, and Knit.
 # Calculate the proportion of atheist responses:
 
 # Print the proportion:
@@ -154,7 +160,7 @@ us12 <- atheism %>%
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Question 7 here and delete this sentence.
 
 
 
@@ -167,11 +173,11 @@ As was suggested earlier, Table 6 provides **sample statistics**, that is, calcu
 The inferential tools for estimating population proportion are analogous to those used for means in the last lab: the confidence interval and the hypothesis test.
 
 <div id="exercise">
-**Exercise**: Write out the conditions for inference to construct a 95% confidence interval for the proportion of atheists in the United States in 2012. Are you confident all conditions are met?
+**Exercise 1**: Write out the conditions for inference to construct a 95% confidence interval for the proportion of atheists in the United States in 2012. Are you confident all conditions are met?
 </div>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Exercise 1 here and delete this sentence.
 
 
 
@@ -179,10 +185,19 @@ Type your answer here and delete this sentence.
 
 If the conditions for inference are reasonable, we can either calculate the standard error and construct the interval by hand, or allow the `inference` function to do it for us.
 
-```{r us-atheism-ci}
+```{r us-atheism-ci, fig.width = 10}
 inference(y = response, data = us12, statistic = "proportion", type = "ci", method = "theoretical", success = "atheist")
 # Compare to
 binom::binom.confint(x = 50, n = 1002)
+# Compare to
+prop.test(x = 50, n = 1002, correct = TRUE)
+prop.test(x = 50, n = 1002, correct = FALSE)
+# Some notes:
+p1 <- binom::binom.plot(n = 20, method = binom.asymp, np = 2000, ylim = c(0.7, 1))
+p2 <- binom::binom.plot(n = 20, method = binom.agresti.coull, np = 2000, ylim = c(0.7, 1))
+p3 <- binom::binom.plot(n = 20, method = binom.prop.test, np = 2000, ylim = c(0.7, 1))
+p4 <- binom::binom.plot(n = 20, method = binom.wilson, np = 2000, ylim = c(0.7, 1))
+gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
 ```
 
 Note that since the goal is to construct an interval estimate for a proportion, it is necessary to specify what constitutes a "success", which here is a response of `atheist`.
@@ -190,11 +205,12 @@ Note that since the goal is to construct an interval estimate for a proportion, 
 Although formal confidence intervals and hypothesis tests don't show up in the report, suggestions of inference appear at the bottom of page 7: "In general, the error margin for surveys of this kind is $\pm$ 3-5% at 95% confidence."
 
 <div id="exercise">
-**Exercise**: Imagine that, after reading a front page story about the latest public opinion poll, a family member asks you, "What is a margin of error?" In one sentence, and ignoring the mechanics behind the calculation, how would you respond in a way that conveys the general concept?
+**Exercise 2**: Imagine that, after reading a front page story about the latest public opinion poll, a family member asks you, "What is a margin of error?" In one sentence, and ignoring the mechanics behind the calculation, how would you respond in a way that conveys the general concept?
 </div>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Exercise 2 here and delete this sentence.
+
 
 
 </div>
@@ -208,29 +224,34 @@ Type your answer here and delete this sentence.
 <li> The margin of error for the estimate of the proportion of atheists in the US in 2012 is 0.0135. </li>
 </ol>
 
-```{r me-perc-atheist-us12}
-# type your code for Question 8 here, and Knit
+```{r label = "me-perc-atheist-us12"}
+# Type your code for Question 8 here, and Knit.
+
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Question 8 here and delete this sentence.
 
 
 
 </div>
 
 <div id="exercise">
-**Exercise**: Using the inference function, calculate confidence intervals for the proportion of atheists in 2012 in two other countries of your choice, and report the associated margins of error. Be sure to note whether the conditions for inference are met. It may be helpful to create new data sets for each of the two countries first and then use these data sets in the `inference` function to construct the confidence intervals.
+**Exercise 3**: Using the inference function, calculate confidence intervals for the proportion of atheists in 2012 in two other countries of your choice, and report the associated margins of error. Be sure to note whether the conditions for inference are met. It may be helpful to create new data sets for each of the two countries first and then use these data sets in the `inference` function to construct the confidence intervals.
 </div>
 
-```{r me-perc-atheist-other-countries}
-# type your code for the Exercise here, and Knit
+```{r label = "me-perc-atheist-other-countries"}
+# Type your code for Exercise 3 here, and Knit.
+
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.---Answers will vary
+Type your answer for Exercise 3 here and delete this sentence---Answers will vary.
+
 
 
 </div>
@@ -243,7 +264,7 @@ Think back to the formula for the standard error: $SE = \sqrt{p(1-p)/n}$. This i
 
 The first step is to make a vector `p` that is a sequence from $0$ to $1$ with each number separated by $0.01$. We can then create a vector of the margin of error (`me`) associated with each of these values of `p` using the familiar approximate formula ($ME = 1.96 \times SE$). Lastly, we plot the two vectors against each other to reveal their relationship.
 
-```{r me-plot}
+```{r label = "me-plot"}
 d <- data.frame(p <- seq(0, 1, 0.01))
 n <- 1000
 d <- d %>%
@@ -262,7 +283,8 @@ ggplot(d, aes(x = p, y = ME)) +
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 9 here and delete this sentence.
+
 
 
 </div>
@@ -277,13 +299,16 @@ Answer the following two questions using the `inference` function. As always, wr
 <li> False </li>
 </ol>
 
-```{r spain-05-12}
-# type your code for Question 10 here, and Knit
+```{r label = "spain-05-12"}
+# Type your code for Question 10 here, and Knit.
+
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Question 10 here and delete this sentence.
+
 
 
 </div>
@@ -294,13 +319,15 @@ Type your answer here and delete this sentence.
 <li> False </li>
 </ol>
 
-```{r us-05-12}
-# type your code for Question 11 here, and Knit
+```{r label = "us-05-12"}
+# Type your code for Question 11 here, and Knit.
+
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence. 
+Type your answer for Question 11 here and delete this sentence. 
 
 
 </div>
@@ -314,13 +341,15 @@ Type your answer here and delete this sentence.
 <li> 5 </li>
 </ol>
 
-```{r type1}
-# type your code for Question 12 here, and Knit
+```{r label = "type1"}
+# Type your code for Question 12 here, and Knit.
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence. 
+Type your answer for Question 12 here and delete this sentence. 
+
 
 
 </div>
@@ -332,19 +361,95 @@ Type your answer here and delete this sentence.
 <li> 9604 people </li> 
 <li> At least 9604 people </li>
 </ol>
-```{r sample-size}
-# type your code for Question 13 here, and Knit
+
+```{r label = "sample-size"}
+# Type your code for Question 13 here, and Knit.
+
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence. 
+Type your answer to Question 13 here and delete this sentence. 
 
 
 </div>
 
 
+## New Problem {-}
 
-```{r, sessioninfo}
+```{r}
+europe <- atheism %>%
+  filter(nationality == "Austria" | nationality == "Bulgaria" | 
+           nationality == "Finaland" | nationality == "France" | 
+           nationality == "Germany" | nationality == "Netherlands" | 
+           nationality == "Poland" | nationality == "Romania" | 
+           nationality == "Spain" | nationality == "Switzerland") 
+
+europe$nationality <- droplevels(europe$nationality)
+T2 <- xtabs(~response + nationality + year, data = europe)
+T2
+A2005 <- T2[, , 1]
+A2012 <- T2[, , 2]
+A2005
+A2012
+prop.table(A2005, 2)
+prop.table(A2012, 2)
+# Graph now
+ggplot(data = europe, aes(x = nationality, fill = response)) + 
+  geom_bar(position = "fill") +
+  theme_bw() +
+  labs(x= "Year", y = "Fraction") +
+  scale_fill_manual(values = c("red", "purple"), name = "Religious Status") +
+  facet_grid(year ~ .) + 
+  theme(axis.text.x  = element_text(angle = 55, hjust = 1.0)) +
+  labs(x= "")
+```
+**Question:** Can you arrange the barplots so that `non-atheist` are arranged in descending order for 2012?
+
+```{r}
+# Rearranging the factor levels 
+europe$nationality <- factor(europe$nationality, 
+                           levels = c("Romania", "Bulgaria", "Poland",
+                                      "Switzerland", "Spain", "Austria",
+                                      "Netherlands", "Germany", "France"))
+ 
+
+ggplot(data = europe, aes(x = nationality, fill = response)) + 
+  geom_bar(position = "fill") +
+  theme_bw() +
+  labs(x= "Year", y = "Fraction") +
+  scale_fill_manual(values = c("red", "purple"), name = "Religious Status") +
+  facet_grid(year ~ .) + 
+  theme(axis.text.x  = element_text(angle = 55, hjust = 1.0)) +
+  labs(x= "")
+
+eu12 <- europe %>%
+  filter(year == 2012)
+head(eu12)
+
+ggplot(data = eu12, aes(x = nationality, fill = response)) + 
+  geom_bar(position = "fill") +
+  theme_bw() +
+  labs(x= "Year", y = "Fraction") +
+  scale_fill_manual(values = c("red", "purple"), name = "Religious Status") +
+  theme(axis.text.x  = element_text(angle = 55, hjust = 1.0)) +
+  labs(x= "")
+
+```
+
+
+**Question:** Use the previously created tibble `europe` to determine if there an association between country and religious status in 2012.
+
+```{r}
+T4 <- xtabs(~ response + nationality, data = eu12)
+T4
+chisq.test(T4)
+# Post hoc tests
+library(fifer)
+chisq.post.hoc(T4, control = "bonferroni", popsInRows  = FALSE)
+```
+
+```{r, label = "sessioninfo"}
 sessionInfo()
 ```

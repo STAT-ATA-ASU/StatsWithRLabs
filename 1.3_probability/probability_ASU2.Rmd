@@ -11,8 +11,8 @@ date: 'Last compiled: `r format(Sys.time(), "%b %d, %Y")`'
 This is a derivative of an [OpenIntro](https://www.openintro.org/stat/labs.php) lab, and is released under a [Attribution-NonCommercial-ShareAlike 3.0 United States](https://creativecommons.org/licenses/by-nc-sa/3.0/us/) license.
 </div>
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(comment = NA, fig.align = "center")
+```{r label = "setup", include=FALSE}
+knitr::opts_chunk$set(comment = NA, fig.align = "center", message = FALSE, warning = FALSE)
 ```
 
 <div id="instructions">
@@ -46,7 +46,7 @@ companion package for this course, `statsr`.
 
 Let's load the packages.
 
-```{r load-packages, message=FALSE}
+```{r label = "load-packages"}
 library(statsr)
 library(dplyr)
 library(ggplot2)
@@ -60,7 +60,7 @@ NBA finals earned him the title *Most Valuable Player* and many spectators
 commented on how he appeared to show a hot hand. Let's load some necessary files
 that we will need for this lab.
 
-```{r load-data}
+```{r label = "load-data"}
 data(kobe_basket)
 ```
 
@@ -92,7 +92,7 @@ occurrence).
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Question 1 here and delete this sentence.
 
 
 </div>
@@ -106,7 +106,7 @@ miss that ended the preceding streak.
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Question 2 here and delete this sentence.
 
 
 </div>
@@ -141,22 +141,45 @@ calc_streak <- function(x){
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Provide appropriate comments below and delete this sentence.
 
 
 
-
+```
+calc_streak <- function(x){
+  if (!is.atomic(x))
+        x <- x[, 1]
+    
+    if (any(!x %in% c("H", "M")))
+        stop('Input should only contain hits ("H") and misses ("M")')
+    
+    y <- rep(0, length(x))
+    y[x == "H"] = 1
+    # 
+    y <- if (y[length(y)] == 0) {
+        y[-length(y)]
+    } else {
+        y
+    }
+    #
+    y <- c(0, y, 0)
+    wz <- which(y == 0)
+    streak = diff(wz) - 1
+    return(data.frame(streak_length = streak))
+}
+```
 </div>
 
-```{r calc-streak-kobe}
+```{r label = "calc-streak-kobe"}
 kobe_streak <- calc_streak(kobe_basket$shot)
 ```
 
 We can then take a look at the distribution of these streak lengths.
 
-```{r plot-streak-kobe}
+```{r label = "plot-streak-kobe"}
 ggplot(data = kobe_streak, aes(x = streak_length)) +
-  geom_histogram(binwidth = 1)
+  geom_histogram(binwidth = 1) + 
+  theme_bw()
 ```
 
 3.  Which of the following is false about the distribution of Kobe's streak lengths 
@@ -170,7 +193,7 @@ from the 2009 NBA finals.
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Question 3 here and delete this sentence.
 
 
 </div>
@@ -225,7 +248,7 @@ ground rules of a random process and then the computer uses random numbers to
 generate an outcome that adheres to those rules. As a simple example, you can
 simulate flipping a fair coin with the following.
 
-```{r head-tail}
+```{r label = "head-tail"}
 coin_outcomes <- c("heads", "tails")
 sample(coin_outcomes, size = 1, replace = TRUE)
 ```
@@ -244,14 +267,14 @@ governs how many samples to draw (the `replace = TRUE` argument indicates we put
 the slip of paper back in the hat before drawing again). Save the resulting 
 vector of heads and tails in a new object called `sim_fair_coin`.
 
-```{r sim-fair-coin}
+```{r label = "sim-fair-coin"}
 sim_fair_coin <- sample(coin_outcomes, size = 100, replace = TRUE)
 ```
 
 To view the results of this simulation, type the name of the object and then use
 `table` to count up the number of heads and tails.
 
-```{r table-sim-fair-coin}
+```{r label = "table-sim-fair-coin"}
 sim_fair_coin
 table(sim_fair_coin)
 ```
@@ -261,7 +284,7 @@ a coin and it lands heads is 0.5. Say we're trying to simulate an unfair coin
 that we know only lands heads 20% of the time. We can adjust for this by adding 
 an argument called `prob`, which provides a vector of two probability weights.
 
-```{r sim-unfair-coin}
+```{r label = "sim-unfair-coin"}
 sim_unfair_coin <- sample(coin_outcomes, size = 100, replace = TRUE, 
                           prob = c(0.2, 0.8))
 ```
@@ -274,16 +297,17 @@ think of the outcome space as a bag of 10 chips, where 2 chips are labeled
 chip that says "head"" is 20%, and "tail" is 80%.
 
 <div id="exercise">
-**Exercise**: In your simulation of flipping the unfair coin 100 times, how many flips came up heads?
+**Exercise 1**: In your simulation of flipping the unfair coin 100 times, how many flips came up heads?
 </div>
 
-```{r, simanswer}
-# type your code here, and Knit
+```{r, label = "simanswer"}
+# Type your code for Exercise 1 here, and Knit.
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Exercise 1 here and delete this sentence.
 
 
 </div>
@@ -304,7 +328,7 @@ Simulating a basketball player who has independent shots uses the same mechanism
 that we use to simulate a coin flip. To simulate a single shot from an 
 independent shooter with a shooting percentage of 50% we type,
 
-```{r sim-basket}
+```{r label = "sim-basket"}
 shot_outcomes <- c("H", "M")
 sim_basket <- sample(shot_outcomes, size = 1, replace = TRUE)
 ```
@@ -314,19 +338,20 @@ we need to align both their shooting percentage and the number of attempted shot
 
 
 <div id="exercise">
-**Exercise**: What change needs to be made to the `sample` function so that it reflects a shooting percentage of 45%? Make this adjustment, then run a simulation to sample 133 shots. Assign the output of this simulation to a new object called `sim_basket`.
+**Exercise 2**: What change needs to be made to the `sample` function so that it reflects a shooting percentage of 45%? Make this adjustment, then run a simulation to sample 133 shots. Assign the output of this simulation to a new object called `sim_basket`.
 </div>
 
 
-```{r, newsim}
-# type your code here
+```{r, label = "newsim"}
+# Type your code for Exercise 2 here, and Knit.
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Exercise 2 here and delete this sentence.
 
-
+The argument `prob = c(0.45, 0.55)` should be used.
 </div>
    
 Note that we have named the new vector `sim_basket`, the same name we assigned to
@@ -345,35 +370,104 @@ a hot hand.
 ### Comparing Kobe Bryant to the Independent Shooter {-}
 
 <div id="exercise">
-**Exercise**: Using `calc_streak`, compute the streak lengths of `sim_basket`, and save the results in a data frame called `sim_streak`. Note that since the `sim_streak` object is just a vector and not a variable in a data frame, we don't need to first select it from a data frame like we did earlier when we calculated the streak lengths for Kobe's shots.
+**Exercise 3**: Using `calc_streak`, compute the streak lengths of `sim_basket`, and save the results in a data frame called `sim_streak`. Note that since the `sim_streak` object is just a vector and not a variable in a data frame, we don't need to first select it from a data frame like we did earlier when we calculated the streak lengths for Kobe's shots.
 </div>
 
-```{r sim-streak-lengths}
-# type your code for the Exercise here, and Knit
+```{r label = "sim-streak-lengths"}
+# Type your code for the Exercise 3 here, and Knit.
+set.seed(13)
+
 
 ```
    
 <div id="exercise">
-**Exercise**: Make a histogram of the distribution of simulated streak lengths of the independent shooter. What is the typical streak length for this simulated independent shooter with a 45% shooting percentage? How long is the player's longest streak of baskets in 133 shots?
+**Exercise 4**: Make a histogram of the distribution of simulated streak lengths of the independent shooter. What is the typical streak length for this simulated independent shooter with a 45% shooting percentage? How long is the player's longest streak of baskets in 133 shots?
 </div>
 
-```{r plot-sim-streaks}
-# type your code for the Exercise here, and Knit
+```{r label = "plot-sim-streaks"}
+# Type your code for the Exercise 4 here, and Knit.
+
 
 ```
 
-```{r, kobegraph, echo = FALSE}
-ggplot(data = kobe_streak, aes(x = streak_length)) +
-  geom_histogram(binwidth = 1, fill = "green") + 
-  theme_bw() + 
-  labs(x = "Streak length", title = "Kobe Bryant")
+```{r, label = "kobegraph", echo = FALSE}
+# Create Kobe Graph
+
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Exercise 4 here and delete this sentence.
 
 
 </div>
+
+### Extra Graphs {-}
+
+```{r, label = "extg", echo = FALSE, fig.height = 8.5, fig.width = 8.5}
+sim_streak  <- calc_streak(sample(shot_outcomes, size = 133, replace = TRUE, prob = c(0.45, 0.55)))
+p1 <- ggplot(data = sim_streak, aes(x = streak_length)) + 
+  geom_histogram(binwidth = 1, fill = "green", color = "black") + 
+  theme_bw() + 
+  labs(x = "Streak length", title = "Independent Shooter") + 
+  xlim(-1, 10) + 
+  ylim(0, 40)
+sim_streak  <- calc_streak(sample(shot_outcomes, size = 133, replace = TRUE, prob = c(0.45, 0.55)))
+p2 <- ggplot(data = sim_streak, aes(x = streak_length)) + 
+  geom_histogram(binwidth = 1, fill = "green", color = "black") + 
+  theme_bw() + 
+  labs(x = "Streak length", title = "Independent Shooter") + 
+  xlim(-1, 10) + 
+  ylim(0, 40)
+sim_streak  <- calc_streak(sample(shot_outcomes, size = 133, replace = TRUE, prob = c(0.45, 0.55)))
+p3 <- ggplot(data = sim_streak, aes(x = streak_length)) + 
+  geom_histogram(binwidth = 1, fill = "green", color = "black") + 
+  theme_bw() + 
+  labs(x = "Streak length", title = "Independent Shooter") + 
+  xlim(-1, 10) + 
+  ylim(0, 40)
+sim_streak  <- calc_streak(sample(shot_outcomes, size = 133, replace = TRUE, prob = c(0.45, 0.55)))
+p4 <- ggplot(data = sim_streak, aes(x = streak_length)) + 
+  geom_histogram(binwidth = 1, fill = "green", color = "black") + 
+  theme_bw() + 
+  labs(x = "Streak length", title = "Independent Shooter") + 
+  xlim(-1, 10) + 
+  ylim(0, 40)
+sim_streak  <- calc_streak(sample(shot_outcomes, size = 133, replace = TRUE, prob = c(0.45, 0.55)))
+p5 <- ggplot(data = sim_streak, aes(x = streak_length)) + 
+  geom_histogram(binwidth = 1, fill = "green", color = "black") + 
+  theme_bw() + 
+  labs(x = "Streak length", title = "Independent Shooter") + 
+  xlim(-1, 10) + 
+  ylim(0, 40)
+sim_streak  <- calc_streak(sample(shot_outcomes, size = 133, replace = TRUE, prob = c(0.45, 0.55)))
+p6 <- ggplot(data = sim_streak, aes(x = streak_length)) + 
+  geom_histogram(binwidth = 1, fill = "green", color = "black") + 
+  theme_bw() + 
+  labs(x = "Streak length", title = "Independent Shooter") + 
+  xlim(-1, 10) + 
+  ylim(0, 40)
+sim_streak  <- calc_streak(sample(shot_outcomes, size = 133, replace = TRUE, prob = c(0.45, 0.55)))
+p7 <- ggplot(data = sim_streak, aes(x = streak_length)) + 
+  geom_histogram(binwidth = 1, fill = "green", color = "black") + 
+  theme_bw() + 
+  labs(x = "Streak length", title = "Independent Shooter") + 
+  xlim(-1, 10) + 
+  ylim(0, 40)
+sim_streak  <- calc_streak(sample(shot_outcomes, size = 133, replace = TRUE, prob = c(0.45, 0.55)))
+p8 <- ggplot(data = sim_streak, aes(x = streak_length)) + 
+  geom_histogram(binwidth = 1, fill = "green", color = "black") + 
+  theme_bw() + 
+  labs(x = "Streak length", title = "Independent Shooter") + 
+  xlim(-1, 10) + 
+  ylim(0, 40)
+p9 <- ggplot(data = kobe_streak, aes(x = streak_length)) +
+  geom_histogram(binwidth = 1, fill = "darkgreen", color = "black") + 
+  theme_bw() + 
+  labs(x = "Streak length", title = "Kobe Bryant") + 
+  xlim(-1, 10) + 
+  ylim(0, 40)
+gridExtra::grid.arrange(p1, p2, p3, p4, p9, p5, p6, p7, p8, ncol = 3, nrow = 3)
+```
 
 4.  If you were to run the simulation of the independent shooter a second time, how 
 would you expect its streak distribution to compare to the distribution from the 
@@ -385,7 +479,7 @@ exercise above?
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 4 here and delete this sentence.
 
 
 </div>
@@ -401,12 +495,12 @@ evidence that the hot hand model fits Kobe's shooting patterns?
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Queston 5 here and delete this sentence.
 
 
 </div>
 
-```{r, sessioninfo}
+```{r, label = "sessioninfo"}
 sessionInfo()
 ```
 

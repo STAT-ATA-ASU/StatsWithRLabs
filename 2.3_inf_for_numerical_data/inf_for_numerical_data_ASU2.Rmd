@@ -10,8 +10,8 @@ date: 'Last compiled: `r format(Sys.time(), "%b %d, %Y")`'
 This is a derivative of an [OpenIntro](https://www.openintro.org/stat/labs.php) lab, and is released under a [Attribution-NonCommercial-ShareAlike 3.0 United States](https://creativecommons.org/licenses/by-nc-sa/3.0/us/) license.
 </div>
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(comment = NA, fig.align = "center")
+```{r label = "setup", include = FALSE}
+knitr::opts_chunk$set(comment = NA, fig.align = "center", message = FALSE, warning = FALSE)
 ```
 
 <div id="instructions">
@@ -28,7 +28,7 @@ companion package for this course, `statsr`.
 
 Let's load the packages.
 
-```{r load-packages, message=FALSE}
+```{r label = "load-packages"}
 library(statsr)
 library(dplyr)
 library(ggplot2)
@@ -44,7 +44,7 @@ observations from this data set.
 
 Load the `nc` data set into the workspace.
 
-```{r load-data}
+```{r label = "load-data"}
 data(nc)
 ```
 
@@ -76,7 +76,7 @@ variable         | description
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 1 here and delete this sentence.
 
 
 </div>
@@ -84,7 +84,7 @@ Type your answer here and delete this sentence.
 As a first step in the analysis, we should take a look at the variables in the dataset. 
 This can be done using the `str` command:
 
-```{r str}
+```{r label = "str"}
 str(nc)
 ```
 
@@ -100,9 +100,19 @@ pregnancy: `gained`.
 Using visualization and summary statistics, describe the distribution of weight 
 gained by mothers during pregnancy. The `summary` function can also be useful.
 
-```{r summary}
+```{r label = "summary"}
 summary(nc$gained)
 ```
+
+```{r label = "MP", fig.cap = "Weight (lbs.) gained during pregnancy"}
+ggplot(data = nc, aes(x = gained)) +
+  geom_density(fill = "purple") + 
+  theme_bw() + 
+  labs(x = "Pounds")
+```
+
+The distribution of pounds gained during pregnancy in Figure \@ref(fig:MP) is unimodal and skewed to the right.  The median is `r median(nc$gained, na.rm = TRUE)` pounds while the interquartile range of the is `r IQR(nc$gained, na.rm = TRUE)` pounds.
+
 
 2. How many mothers are we missing weight gain data from?
 <ol>
@@ -113,7 +123,7 @@ summary(nc$gained)
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Question 2 here and delete this sentence.
 
 
 </div>
@@ -132,13 +142,24 @@ false about the relationship between habit and weight?
 <li> The IQRs of the distributions are roughly equal. </li>
 </ol>
 
-```{r habit-weight-box}
-# type your code for the Question 3 here, and Knit
+```{r label = "habit-weight-box"}
+# Type your code for Question 3 here, and Knit.
 
+```
+Figure \@ref(fig:rmnas) removes the missing values and uses the $x-$ axis as the response.
+
+```{r, label = "rmnas", fig.cap = "Side-by-side boxplots of `weight` for smoking and nonsmoking mothers"}
+ND <- nc %>%
+  filter(!is.na(habit)) 
+ggplot(data = ND, aes(x = habit, y = weight, fill = habit)) + 
+  geom_boxplot() + 
+  guides(fill = FALSE) + 
+  coord_flip() + 
+  theme_bw()
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 3 here and delete this sentence.
 
 
 </div>
@@ -148,7 +169,7 @@ also compare the means of the distributions using the following to group the
 data by the `habit` variable, and then calculate the mean `weight` in these 
 groups using the `mean` function.
 
-```{r by-means}
+```{r label = "by-means"}
 nc %>%
   group_by(habit) %>%
   summarise(mean_weight = mean(weight))
@@ -164,17 +185,18 @@ test.
 
 
 <div id="exercise">
-**Exercise**: Are all conditions necessary for inference satisfied? Comment on each. You can compute the group sizes using the same `by` command above but replacing `mean(weight)` with `n()`.
+**Exercise 1**: Are all conditions necessary for inference satisfied? Comment on each. You can compute the group sizes using the same `by` command above but replacing `mean(weight)` with `n()`.
 </div>
 
-```{r, satisfiedornot}
-# type your code  3 here, and Knit
+```{r, label = "satisfiedornot"}
+# Type your code for Exercise 1 here, and Knit.
 
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Exercise 1 here and delete this sentence.
+
 
 
 </div>
@@ -190,7 +212,7 @@ smoking and non-smoking mothers are different?
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 4 here and delete this sentence.
 
 
 </div>
@@ -200,7 +222,7 @@ hypothesis tests and constructing confidence intervals.
 
 Then, run the following:
 
-```{r inf-weight-habit-ht, tidy=FALSE}
+```{r label = "inf-weight-habit-ht"}
 inference(y = weight, x = habit, data = nc, statistic = "mean", type = "ht", null = 0, 
           alternative = "twosided", method = "theoretical")
 ```
@@ -222,11 +244,11 @@ Lastly, the `method` of inference can be `"theoretical"` or `"simulation"` based
 For more information on the inference function see the help file with `?inference`.
 
 <div id="exercise">
-**Exercise**: What is the conclusion of the hypothesis test?
+**Exercise 2**: What is the conclusion of the hypothesis test?
 </div>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Exercise 2 here and delete this sentence.
 
 
 </div>
@@ -245,13 +267,14 @@ between 0 and 1. Also note that when doing a confidence interval arguments like
 <li> We are 95% confident that babies born to nonsmoker mothers are on average 0.05 to 0.58 pounds heavier at birth than babies born to smoker mothers. </li>
 </ol>
 
-```{r habit-weight-ci}
-# type your code for the Question 5 here, and Knit
+```{r label = "habit-weight-ci"}
+# Type your code for Question 5 here, and Knit.
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 5 here and delete this sentence.
 
 
 </div>
@@ -259,7 +282,7 @@ Type your answer here and delete this sentence.
 By default, the function reports an interval for ($\mu_{nonsmoker} - \mu_{smoker}$)
 . We can easily change this order by using the `order` argument:
 
-```{r inf-weight-habit-ci, tidy=FALSE}
+```{r label = "inf-weight-habit-ci"}
 inference(y = weight, x = habit, data = nc, statistic = "mean", type = "ci", 
           method = "theoretical", order = c("smoker","nonsmoker"))
 ```
@@ -270,62 +293,69 @@ inference(y = weight, x = habit, data = nc, statistic = "mean", type = "ci",
 parameter, there is no explanatory variable, so you can omit the `x` variable 
 from the function.
 
-```{r weeks-ci-99}
-# type your code for Question 6 here, and Knit
+```{r label = "weeks-ci-99"}
+# Type your code for Question 6 here, and Knit.
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence. - interpret the CI
+Type your answer for Question 6 here and delete this sentence - interpret the CI.
 
 
 </div>
 
 <div id="exercise">
-**Exercise**: Calculate a new confidence interval for the same parameter at the 90% confidence level. Comment on the width of this interval versus the one obtained in the the previous exercise.
+**Exercise 3**: Calculate a new confidence interval for the same parameter at the 90% confidence level. Comment on the width of this interval versus the one obtained in the the previous exercise.
 </div>
 
-```{r weeks-ci-90}
-# type your code for the Exercise here, and Knit
+```{r label = "weeks-ci-90"}
+# Type your code for Exercise 3 here, and Knit.
+
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence. - interpret the CI
+Type your answer for Exercise 3 here and delete this sentence - interpret the CI.
 
- 
+
 </div>
 
 <div id="exercise">
-**Exercise**: Conduct a hypothesis test evaluating whether the average weight gained by younger mothers is different from the average weight gained by mature mothers.
+**Exercise 4**: Conduct a hypothesis test evaluating whether the average weight gained by younger mothers is different from the average weight gained by mature mothers.
 </div>
 
-```{r gained-mature-ht}
-# type your code for the Exercise here, and Knit
+```{r label = "gained-mature-ht"}
+# Type your code for Exercise 4 here, and Knit.
+
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Exercise 4 here and delete this sentence.
 
 
 </div>
 
 7. Now, a non-inference task: Determine the age cutoff for younger and mature 
 mothers. Use a method of your choice, and explain how your method works.
-```{r cutoff-mature}
+
+```{r label = "cutoff-mature"}
 # type your code for Question 7 here, and Knit
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 7 here and delete this sentence.
 
-
+ 
 </div>
 
 <div id="exercise">
-**Exercise**: Pick a pair of variables: one numerical (response) and one categorical 
+**Exercise 5**: Pick a pair of variables: one numerical (response) and one categorical 
 (explanatory). Come up with a research question evaluating the relationship between 
 these variables. Formulate the question in a way that it can be answered using a 
 hypothesis test and/or a confidence interval. Answer your question using the `inference` 
@@ -336,14 +366,14 @@ and analyzing the data to answer this question is basically what you will need t
 your project as well.)
 </div>
 
-```{r pick-your-own}
-# type your code for the Exercise here, and Knit
+```{r label = "pick-your-own"}
+# Type your code for Exercise 5 here, and Knit.
 
 # Answers will vary
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Exercise 5 here and delete this sentence.
 
 
 </div>

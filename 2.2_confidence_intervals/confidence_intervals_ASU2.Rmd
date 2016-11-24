@@ -11,8 +11,8 @@ This is a derivative of an [OpenIntro](https://www.openintro.org/stat/labs.php) 
 Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0).
 </div>
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(comment = NA, fig.align = "center")
+```{r label = "setup", include = FALSE}
+knitr::opts_chunk$set(comment = NA, fig.align = "center", message = FALSE, warning = FALSE)
 ```
 
 <div id="instructions">
@@ -56,7 +56,7 @@ companion package for this course, `statsr`.
 
 Let's load the packages.
 
-```{r load-packages, message=FALSE}
+```{r label = "load-packages"}
 library(statsr)
 library(dplyr)
 library(ggplot2)
@@ -72,7 +72,7 @@ in Ames between 2006 and 2010.  This collection represents our population of
 interest. In this lab, we would like to learn about these home sales by taking 
 smaller samples from the full population. Start by loading the data.
 
-```{r load-data}
+```{r label = "load-data"}
 data(ames)
 ```
 
@@ -81,24 +81,32 @@ population.  Note that the data set has information on many housing variables;
 but for the first portion of the lab, we will focus on the size of the house, 
 represented by the variable `area`.
 
-```{r sample}
+```{r label = "sample"}
 set.seed(1963)
 n <- 60
 samp <- sample_n(ames, n)
 ```
 
 <div id="exercise">
-**Exercise**: Describe the distribution of homes in your sample. What would you 
+**Exercise 1**: Describe the distribution of homes in your sample. What would you 
 say is the "typical" size within your sample? Also state precisely what you 
 interpreted "typical" to mean.
 </div>
-```{r describe-sample}
-# type your code for the Exercise here, and Knit
+```{r label = "describe-sample", fig.cap="Density of square feet"}
+# Type your code for Exercise 1 here, and Knit. --- Graph `area`
+
+
+```
+
+
+```{r, label = "SUMRESULTS"}
+# Type your code for Exercise 1 here, and Knit. --- Compute summary of `area`
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Exercise 1 here and delete this sentence.
 
 
 </div>
@@ -110,7 +118,7 @@ Type your answer here and delete this sentence.
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 1 here and delete this sentence.
 
 
 </div>
@@ -138,7 +146,7 @@ middle 95% of the distribution, and the critical value associated with this area
 correspond to the 97.5$^{\text{th}}$ percentile.
 
 We can find the critical value for a 95% confidence interval using
-```{r t_star_95}
+```{r label = "t_star_95"}
 t_star_95 <- qt(0.975, n-1)  # recall that n = 60
 t_star_95
 ```
@@ -151,7 +159,7 @@ knitr::include_app("https://gallery.shinyapps.io/dist_calc/", height = "1300px")
 
 
 Let's finally calculate the confidence interval:
-```{r ci}
+```{r label = "ci"}
 CI <- samp %>%
   summarise(lower = mean(area) - t_star_95 * (sd(area) / sqrt(n)),
             upper = mean(area) + t_star_95 * (sd(area) / sqrt(n)))
@@ -170,7 +178,7 @@ and *upper*. There are a few conditions that must be met for this interval to be
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 2 here and delete this sentence.
 
 
 </div>
@@ -187,7 +195,8 @@ Type your answer here and delete this sentence.
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 3 here and delete this sentence.
+
 
 
 </div>
@@ -197,23 +206,25 @@ have data on the entire population. Let's calculate this value so that
 we can determine if our confidence intervals actually capture it. We'll store it in a
 data frame called `params` (short for population parameters), and name it `mu`.
 
-```{r pop-mean}
+```{r label = "pop-mean"}
 params <- ames %>%
   summarise(mu = mean(area))
+params
 ```
 
 <div id="exercise">
-**Exercise**: Does your confidence interval capture the true average size of houses in 
-Ames?
+**Exercise 2**: Does your confidence interval capture the true average size of houses in Ames?
 </div>
 
-```{r check-ci-contain-true-mean}
-# type your code for the Exercise here, and Knit
+```{r label = "check-ci-contain-true-mean"}
+# Type your code for Exercise 2 here, and Knit.
+
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Exercise 2 here and delete this sentence.
 
 
 </div>
@@ -227,7 +238,7 @@ Type your answer here and delete this sentence.
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 4 here and delete this sentence.
 
 
 </div>
@@ -247,7 +258,7 @@ random samples of size `n` from the "population" (remember we defined $n = 60$ e
 and computes the upper and lower bounds of the confidence intervals based on these
 samples.
 
-```{r calculate-100-cis}
+```{r label = "calculate-100-cis"}
 ci <- ames %>%
         rep_sample_n(size = n, reps = 100, replace = TRUE) %>%
         summarise(lower = mean(area) - t_star_95 * (sd(area) / sqrt(n)),
@@ -256,7 +267,7 @@ ci <- ames %>%
 
 Let's view the first five intervals:
 
-```{r first-five-intervals}
+```{r label = "first-five-intervals"}
 ci %>%
   slice(1:5)
 ```
@@ -268,7 +279,7 @@ true population mean. Note that capturing this value would mean the lower bound 
 confidence interval is below the value and upper bound of the confidence interval is
 above the value. Remember that we create new variables using the `mutate` function.
 
-```{r capture-mu}
+```{r label = "capture-mu"}
 ci <- ci %>%
   mutate(capture_mu = ifelse(lower < params$mu & upper > params$mu, "yes", "no"))
 ```
@@ -304,7 +315,7 @@ should instead look like
 
 We can accomplish this using the following:
 
-```{r create-ci-data-for-plot}
+```{r label = "create-ci-data-for-plot"}
 ci_data <- data.frame(ci_id = c(1:100, 1:100),
                       ci_bounds = c(ci$lower, ci$upper),
                       capture_mu = c(ci$capture_mu, ci$capture_mu))
@@ -312,22 +323,24 @@ ci_data <- data.frame(ci_id = c(1:100, 1:100),
 
 Finally, we can create the plot using the following:
 
-```{r plot-ci, fig.height = 7}
+```{r label = "plot-ci", fig.height = 7}
 ggplot(data = ci_data, aes(x = ci_bounds, y = ci_id, 
                            group = ci_id, color = capture_mu)) +
   geom_point(size = 1) +  # add points at the ends, size = 1
   geom_line() +           # connect with lines
   geom_vline(xintercept = params$mu, color = "darkgray") +  # draw vertical line at mu
-  theme_bw()
+  theme_bw() + 
+  scale_color_manual(values = c("red", "green"), name = "Captures Mean") + 
+  labs(x = "Confidence Bounds", y = "")
 ```
 
 <div id="exercise">
-**Exercise**: What proportion of your confidence intervals include the true population mean? 
+**Exercise 3**: What proportion of your confidence intervals include the true population mean? 
 Is this proportion exactly equal to the confidence level? If not, explain why.
 </div>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Exercise 3 here and delete this sentence.
 
 
 </div>
@@ -342,23 +355,27 @@ Type your answer here and delete this sentence.
 <li> 2.66 </li>
 </ol>
 
-```{r find-99-perc-crit-val}
-# type your code for the Question 5 here, and Knit
+```{r label = "find-99-perc-crit-val"}
+# Type your code for the Question 5 here, and Knit.
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 5 here and delete this sentence.
 
 
 </div>
 
 
 <div id="exercise">
-**Exercise**: Calculate 100 confidence intervals at the 99% confidence level.  Plot all intervals and calculate the proportion of intervals that include the true population mean.
+**Exercise 4**: Calculate 100 confidence intervals at the 99% confidence level.  Plot all intervals and calculate the proportion of intervals that include the true population mean.
 </div>
-```{r plot-99-perc-cis, fig.height=7}
-# type your code for the Exercise here, and Knit
+
+```{r label = "plot-99-perc-cis", fig.height=7}
+# Type your code for Exercise 4 here, and Knit.
+
+# Compute proportion of CIs containing mu
 
 ```
 
@@ -371,11 +388,11 @@ Type your answer here and delete this sentence.
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Question 6 here and delete this sentence.
 
 
 </div>
 
-```{r, sessioninfo}
+```{r, label = "sessioninfo"}
 sessionInfo()
 ```

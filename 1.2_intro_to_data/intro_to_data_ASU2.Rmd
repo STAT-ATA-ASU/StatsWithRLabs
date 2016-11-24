@@ -6,8 +6,8 @@ css: "../CSS/lab.css"
 date: 'Last compiled: `r format(Sys.time(), "%b %d, %Y")`'
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(comment = NA, fig.align = "center")
+```{r label = "setup", include=FALSE}
+knitr::opts_chunk$set(comment = NA, fig.align = "center", warning = FALSE, message = FALSE)
 ```
 
 <div id="instructions">
@@ -23,7 +23,7 @@ summaries of the data on these flights and explore delay times. As this is a lar
 data set, you will also learn the indispensable skills of data 
 processing and subsetting.
 
-## Getting started output: {-}
+## Getting started {-}
 
 ### Load packages {-}
 
@@ -31,9 +31,9 @@ In this lab we will explore the data using the `dplyr` package and visualize it
 using the `ggplot2` package for data visualization. The data can be found in the
 companion package for this course, `statsr`.
 
-Let's load the packages.
+Let us load the packages.
 
-```{r load-packages, message=FALSE}
+```{r label = "load-packages"}
 library(statsr)
 library(dplyr)
 library(ggplot2)
@@ -50,7 +50,7 @@ in this lab.
 We begin by loading the `nycflights` data frame. Type the following in your console
 to load the data:
 
-```{r load-data}
+```{r label = "load-data"}
 data(nycflights)
 ```
 
@@ -61,7 +61,7 @@ a term that will be used throughout the labs.
 
 To view the names of the variables, type the command
 
-```{r names}
+```{r label = "names"}
 names(nycflights)
 ```
 
@@ -101,11 +101,11 @@ you with what code stands for which airport.)
 A very useful function for quickly scanning your data frame as well as viewing
 its dimensions and data types is `str`, which stands for **str**ucture.
 
-```{r str}
+```{r label = "str"}
 str(nycflights)
 ```
 
-The `nycflights` data frame is a massive trove of information. Let's think about 
+The `nycflights` data frame is a massive trove of information. Let us think about 
 some questions we might want to answer with these data:
 
 - we might want to find out how late delayed flights arriving at a particular 
@@ -136,9 +136,9 @@ future lab.
 ### Departure delays in flights to Raleigh-Durham (RDU) {-}
 
 We can examine the distribution of departure delays of all flights with a 
-histogram.
+histogram (see Figure \@ref(fig:hist-dep-delay)).
 
-```{r hist-dep-delay}
+```{r label = "hist-dep-delay", fig.cap = "Default `ggplot2` histogram of departure delays"}
 ggplot(data = nycflights, aes(x = dep_delay)) +
   geom_histogram() 
 ```
@@ -151,7 +151,7 @@ Histograms are generally a very good way to see the shape of a single
 distribution, but that shape can change depending on how the data is split 
 between the different bins. You can easily define the binwidth you want to use:
 
-```{r hist-dep-delay-bins}
+```{r label = "hist-dep-delay-bins"}
 ggplot(data = nycflights, aes(x = dep_delay)) +
   geom_histogram(binwidth = 15)
 ggplot(data = nycflights, aes(x = dep_delay)) +
@@ -159,11 +159,11 @@ ggplot(data = nycflights, aes(x = dep_delay)) +
 ```
 
 <div id="exercise">
-**Exercise**: How do these three histograms with the various binwidths compare?
+**Exercise 1**: How do these three histograms with the various binwidths compare?
 </div>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Exercise 1 here and delete this sentence.
 
 
 </div>
@@ -172,7 +172,7 @@ Type your answer here and delete this sentence.
 If we want to focus on departure delays of flights headed to RDU only, we need to  `filter` the data for flights headed to RDU (`dest == "RDU"`) and then make
 a histogram of departure delays of only those flights.
 
-```{r rdu-flights-hist}
+```{r label = "rdu-flights-hist"}
 rdu_flights <- nycflights %>%
   filter(dest == "RDU")
 ggplot(data = rdu_flights, aes(x = dep_delay)) +
@@ -205,7 +205,7 @@ analysis are as follows:
 
 We can also obtain numerical summaries for these flights:
 
-```{r rdu-flights-summ}
+```{r label = "rdu-flights-summ"}
 rdu_flights %>%
   summarise(mean_dd = mean(dep_delay), sd_dd = sd(dep_delay), n = n())
 ```
@@ -233,7 +233,7 @@ single numerical variable are as follows:
 We can also filter based on multiple criteria. Suppose we are interested in
 flights headed to San Francisco (SFO) in February:
 
-```{r}
+```{r, label = "multcrit"}
 sfo_feb_flights <- nycflights %>%
   filter(dest == "SFO", month == 2)
 ```
@@ -253,12 +253,13 @@ this data frame as `sfo_feb_flights`. How many flights meet these criteria?
 </ol>
 
 ```{r sfo-feb-flights}
-# type your code for Question 1 here, and Knit
+# Type your code for Question 1 here, and Knit.
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 1 here and delete this sentence.
 
 
 </div>
@@ -274,13 +275,14 @@ delays of `sfo_feb_flights`. Which of the following is false?
 <li> More than 50% of flights arrive on time or earlier than scheduled. </li>
 </ol>
 
-```{r sfo-feb-flights-arrival-delays}
-# type your code for Question 2 here, and Knit
+```{r label = "sfo-feb-flights-arrival-delays", fig.cap = "San Francicso arrival delays for the month of February"}
+# Type your code for Question 2 here, and Knit.
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 2 here and delete this sentence.
+
 
 
 </div>
@@ -309,13 +311,14 @@ IQR of arrival delays?
 <li> Frontier Airlines </li>
 </ol>
 
-```{r sfo-feb-flights-arrival-delays-carrier}
-# type your code for Question 3 here, and Knit
+```{r label = "sfo-feb-flights-arrival-delays-carrier"}
+# Type your code for Question 3 here, and Knit.
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 3 here and delete this sentence.
 
 
 </div>
@@ -333,7 +336,7 @@ we are learning, we need to
     + `summarise` mean departure delays.
 - Then, we need to `arrange` these average delays in `desc`ending order
 
-```{r mean-dep-delay-months}
+```{r label = "mean-dep-delay-months"}
 nycflights %>%
   group_by(month) %>%
   summarise(mean_dd = mean(dep_delay)) %>%
@@ -349,13 +352,14 @@ nycflights %>%
 <li> December </li>
 </ol>
 
-```{r highest-avg-dep-delay-month}
-# type your code for Question 4 here, and Knit
+```{r label = "highest-avg-dep-delay-month"}
+# Type your code for Question 4 here, and Knit.
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 4 here and delete this sentence.
 
 
 </div>
@@ -370,12 +374,13 @@ Type your answer here and delete this sentence.
 </ol>
 
 ```{r highest-median-dep-delay-month}
-# type your code for Question 5 here, and Knit
+# Type your code for Question 5 here, and Knit.
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 5 here and delete this sentence.
 
 
 </div>
@@ -391,7 +396,7 @@ avoid flying if you really dislike delayed flights, and why?
 </ol>
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer  for Question 6 here and delete this sentence.
 
 
 </div>
@@ -399,7 +404,7 @@ Type your answer here and delete this sentence.
 We can also visualize the distributions of departure delays across months using 
 side-by-side box plots:
 
-```{r delay-month-box}
+```{r label = "delay-month-box"}
 ggplot(nycflights, aes(x = factor(month), y = dep_delay)) +
   geom_boxplot()
 ```
@@ -410,6 +415,39 @@ require a categorical variable on the x-axis, however in the data frame `month` 
 stored as a numerical variable (numbers 1 - 12). Therefore we can force R to treat
 this variable as categorical, what R calls a **factor**, variable with 
 `factor(month)`.
+
+### This is fun! {-}
+
+In Figure \@ref(fig:focus-delay-month-box), the focus of the boxplots is for delays less than 75 minutes.  The boxplots are arranged in descending order of average delay, and the month instead of number is displayed at a 60 degree angle along the $x-$ axis. Figure \@ref(fig:focus-delay-month-box2) arranges the boxplots by descending median departure delay.
+
+```{r label = "focus-delay-month-box", fig.cap = "Boxplots arranged by descending mean departure"}
+Q4 <- nycflights %>%
+  group_by(month) %>%
+  summarise(mean_dd = mean(dep_delay)) %>%
+  arrange(desc(mean_dd))
+ggplot(nycflights, aes(x = month.name[month], y = dep_delay) ) +
+  geom_boxplot(fill = "purple", outlier.size = 0.5) +
+  theme_bw() +
+  ylim(-22, 75) + 
+  labs(x = "", y = "Departure delay (minutes)") + 
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) + 
+  scale_x_discrete(limits = month.name[Q4$month]) # descending average delay
+```
+
+```{r label = "focus-delay-month-box2", fig.cap = "Boxplots arranged by descending median departure delay"}
+Q5 <- nycflights %>%
+  group_by(month) %>%
+  summarise(median_dd = median(dep_delay)) %>%
+  arrange(desc(median_dd))
+ggplot(nycflights, aes(x = month.name[month], y = dep_delay) ) +
+  geom_boxplot(fill = "purple", outlier.size = 0.5) +
+  theme_bw() +
+  ylim(-22, 75) + 
+  labs(x = "", y = "Departure delay (minutes)") + 
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) + 
+  scale_x_discrete(limits = month.name[Q5$month]) # descending median delay
+```
+
 
 ### On time departure rate for NYC airports {-}
 
@@ -431,7 +469,7 @@ percentage.
 Let's start with classifying each flight as "on time" or "delayed" by
 creating a new variable with the `mutate` function.
 
-```{r dep-type}
+```{r label = "dep-type"}
 nycflights <- nycflights %>%
   mutate(dep_type = ifelse(dep_delay < 5, "on time", "delayed"))
 ```
@@ -446,7 +484,7 @@ version of this data frame that includes the new `dep_type` variable.
 
 We can handle all the remaining steps in one code chunk:
 
-```{r}
+```{r, label = "onechunk"}
 nycflights %>%
   group_by(origin) %>%
   summarise(ot_dep_rate = sum(dep_type == "on time") / n()) %>%
@@ -461,13 +499,14 @@ which NYC airport would you choose to fly out of?
 <li> LGA </li> 
 </ol>
 
-```{r on-time-dep-perc-airport}
-# type your code for Question 7 here, and Knit
+```{r label = "on-time-dep-perc-airport"}
+# Type your code for Question 7 here, and Knit.
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 7 here and delete this sentence.
 
 
 </div>
@@ -475,7 +514,7 @@ Type your answer here and delete this sentence.
 We can also visualize the distribution of on on time departure rate across 
 the three airports using a segmented bar plot.
 
-```{r}
+```{r, label = "segbarplot"}
 ggplot(data = nycflights, aes(x = origin, fill = dep_type)) +
   geom_bar()
 ```
@@ -484,11 +523,11 @@ ggplot(data = nycflights, aes(x = origin, fill = dep_type)) +
 The last graph is difficult to interpret and a better representation might look like the following:
 </div>
 
-```{r}
+```{r, label = "better"}
 ggplot(data = nycflights, aes(x = origin, fill = dep_type)) +
   geom_bar(position = "fill") + 
   scale_fill_manual(values = c("red", "green"), name = "Departure Type") + 
-  guides(fill = guide_legend(reverse = TRUE)) + 
+  guides(fill = guide_legend()) + 
   theme_bw() + 
   labs(y = "Percentage")
 ```
@@ -509,13 +548,14 @@ Google this tail number to find out more about the aircraft.
 <li> N959UW </li> 
 </ol>
 
-```{r fastest-avg-speed-tailnum}
-# type your code for Question 8 here, and Knit
+```{r label = "fastest-avg-speed-tailnum"}
+# Type your code for Question 8 here, and Knit.
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Question 8 here and delete this sentence.
 
 
 </div>
@@ -530,13 +570,14 @@ about the relationship between average speed and distance.
 <li> The distribution of distances are uniform over 0 to 5000 miles. </li> 
 </ol>
 
-```{r avg-speed-dist-scatter}
-# type your code for Question 9 here, and Knit
+```{r label = "avg-speed-dist-scatter", fig.cap = "Average airplane speed versus the distance travelled"}
+# Type your code for Question 9 here, and Knit.
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer to Question 9 here and delete this sentence.
 
 
 </div>
@@ -549,13 +590,15 @@ based on whether the flight departed on time or not. What percent of flights  th
 were `"delayed"` departing arrive `"on time"`? 
 [NUMERIC INPUT]
 
-```{r on-time-arr-perc}
-# type your code for Question 10 here, and Knit
+```{r label = "on-time-arr-perc"}
+# Type your code for Question 10 here, and Knit.
+
 
 ```
 
 <div id="answer">
-Type your answer here and delete this sentence.
+Type your answer for Question 10 here and delete this sentence.
+
 
 
 </div>
