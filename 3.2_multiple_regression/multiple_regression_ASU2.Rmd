@@ -12,8 +12,8 @@ This is a product of OpenIntro that is released under a [Creative Commons Attrib
 This lab was written by Mine &Ccedil;etinkaya-Rundel and Andrew Bray and modified by Alan Arnholt.
 </div>
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(comment = NA, fig.align = "center")
+```{r label = "setup", include = FALSE}
+knitr::opts_chunk$set(comment = NA, fig.align = "center", warning = FALSE, message = FALSE)
 ```
 
 <div id="instructions">
@@ -39,8 +39,8 @@ into a positive professor evaluation.
 
 ### Load packages {-}
 
-```{r, echo = FALSE, message = FALSE, results = 'hide', warning = FALSE}
-PackagesUsed <- c("DT", "ggplot2", "knitr", "rmarkdown", "dplyr", "GGally", "statsr", "htmlTable", "bookdown")
+```{r, echo = FALSE, results = 'hide'}
+PackagesUsed <- c("DT", "ggplot2", "knitr", "rmarkdown", "dplyr", "GGally", "statsr", "htmlTable")
 # Write bib information
 knitr::write_bib(PackagesUsed, file = "./PackagesUsed.bib")
 # Load packages
@@ -54,7 +54,7 @@ is accomplished with the `ggplot2` and `GGally` packages created by @R-ggplot2 a
 
 Let us load the packages.
 
-```{r load-packages, message=FALSE}
+```{r label = "load-packages"}
 library(statsr)
 library(dplyr)
 library(ggplot2)
@@ -77,14 +77,14 @@ data for *Data Analysis Using Regression and Multilevel/Hierarchical Models*
 different course and columns represent variables about the courses and 
 professors.
 
-Let's load the data:
+Let us load the data:
 
-```{r load-data, message=FALSE}
+```{r label = "load-data"}
 data(evals)
 ```
 
 ```{r, label = "TableDesc", echo = FALSE}
-options(table_counter = TRUE)
+# options(table_counter = TRUE)
 TRY <- data.frame(variable = c("score", "rank", "ethnicity", "gender", "language", "age",
                                "cls_perc_eval", "cls_did_eval", "cls_students", "cls_level",
                                "cls_profs", "cls_credits", "bty_f1lower", "bty_f1upper",
@@ -109,11 +109,13 @@ TRY <- data.frame(variable = c("score", "rank", "ethnicity", "gender", "language
                                   "average beauty rating of professor.",
                                   "outfit of professor in picture: not formal, formal.",
                                   "color of professor's picture: color, black & white."))
-htmlTable::htmlTable(as.matrix(TRY), align = "ll", css.cell = "padding-left: 1em; padding-right: 1em;", caption = "Variables and descriptions for `evals`")
+# htmlTable::htmlTable(as.matrix(TRY), align = "ll", css.cell = "padding-left: 1em; padding-right: 1em;", caption = "Variables and descriptions for `evals`")
+
+knitr::kable(as.matrix(TRY), align = "ll", caption = "Variables and descriptions for `evals`")
 ```
 
 
-```{r, label="show"}
+```{r, label = "show"}
 DT::datatable(evals)
 ```
 
@@ -124,7 +126,7 @@ DT::datatable(evals)
 </ol>
 
 <div id="answer">
-your answer here
+Type your answer for Question 1 between the answer tags and delete this comment.
 
 
 </div>
@@ -138,7 +140,7 @@ your answer here
 </ol>
 
 <div id="answer">
-your answer here
+Type your answer for Question 2 between the answer tags and delete this comment.
 
 
 </div>
@@ -152,30 +154,32 @@ your answer here
 <li> 11 of students gave a professor a score below 3. </li> 
 <li> The left skewness of the data suggests that the students are less likely to rate the professors highly. </li>
 </ol>
-```{r score-dist}
-# type your code for Question 3 here, and Knit
+
+```{r label = "score-dist"}
+# Type your code for Question 3 here, and Knit.
+
 
 ```
 
 <div id="answer">
-your answer here
+Type your answer for Question 3 between the answer tags and delete this comment.
 
 
 </div>
 
 <div id="exercise">
-**Exercise:** Excluding `score`, select two other variables and describe their 
+**Exercise 1:** Excluding `score`, select two other variables and describe their 
 relationship using an appropriate visualization (scatterplot, side-by-side boxplots, 
 or mosaic plot).
 </div>
 
-```{r two-vars-eda, fig.width = 5, fig.height = 5}
-# type your code for the Exercise here, and Knit
+```{r label = "two-vars-eda", fig.width = 5, fig.height = 5}
+# Type your code for the Exercise 1 here, and Knit.
 
 ```
 
 <div id="answer">
-your answer here - answers will vary
+Type your answer for Exercise 1 between the answer tags and delete this comment. - Answers will vary
 
 
 </div>
@@ -186,10 +190,11 @@ The fundamental phenomenon suggested by the study is that teachers judged more a
 are evaluated more favorably. Let us create a scatterplot to see if this appears 
 to be the case:
 
-```{r scatterSBA, fig.cap = "Score versus beauty average"}
+```{r label = "scatterSBA", fig.cap = "Score versus beauty average"}
 ggplot(data = evals, aes(x = bty_avg, y = score)) +
   geom_point(color = "lightblue") + 
-  theme_bw()
+  theme_bw() + 
+  labs(x = "average beauty score", y = "evaluation score")
 ```
 
 Before we draw conclusions about the trend in Figure \@ref(fig:scatterSBA), compare the number of observations 
@@ -197,24 +202,24 @@ in the data frame with the approximate number of points on the scatterplot.
 Is anything awry?
 
 <div id="answer">
-your answer here
+Type your answer here - answers may vary
 
 
 </div>
 
 <div id="exercise">
-**Exercise:** Replot the scatterplot, but this time replace the `geom_point()` layer 
+**Exercise 2:** Replot the scatterplot, but this time replace the `geom_point()` layer 
 with a `geom_jitter()` layer. (Use `?geom_jitter` to learn more.)  What was misleading 
 about the initial scatterplot?
 </div>
 
-```{r jitter}
-# type your code for the Exercise here, and Knit
+```{r label = "jitter"}
+# Type your code for the Exercise 2 here, and Knit.
 
 ```
 
 <div id="answer">
-your answer here - answers will vary
+Type your answer for Exercise 2 between the answer tags and delete this comment. - Answers will vary
 
 
 </div>
@@ -224,37 +229,40 @@ natural variation? Fit a linear model called `modB` to predict average professor
 score by average beauty rating and add the line to your plot using the following. If 
 you do not remember how to do this, refer to the previous lab.  
 
-```{r scatter-score-bty_avg-line}
+```{r label = "scatter-score-bty_avg-line"}
 ggplot(data = evals, aes(x = bty_avg, y = score)) +
   geom_jitter(color = "lightblue", alpha = 0.8) +
   geom_smooth(method = "lm") + 
-  theme_bw()
+  theme_bw() +
+  labs(x = "average beauty score", y = "evaluation score")
 ```
 
 The blue line is the model. The shaded gray area around the line tells us about the 
-variability we might expect in our predictions. To turn that off, use `se = FALSE`.
+variability we might expect in our predictions. To remove the confidence band, use `se = FALSE`.
 
-```{r scatter-score-bty_avg-line-no-se}
+```{r label = "scatter-score-bty_avg-line-no-se"}
 ggplot(data = evals, aes(x = bty_avg, y = score)) +
   geom_jitter(color = "lightblue", alpha = 0.8) +
   geom_smooth(method = "lm", se = FALSE) + 
-  theme_bw()
+  theme_bw() + 
+  labs(x = "average beauty score", y = "evaluation score")
 ```
 
 
 
 <div id="exercise">
-**Exercise:** Print a summary of the linear model, write out the equation, and 
+**Exercise 3:** Print a summary of the linear model, write out the equation, and 
 interpret the slope. 
 </div>
 
-```{r summary-model}
-# type your code for the Exercise here, and Knit
+```{r label = "summary-model"}
+# Type your code for the Exercise 3 here, and Knit.
+
 
 ```
 
 <div id="answer">
-your answer here
+Type your answer for Exercise 3 between the answer tags and delete this comment.
 
 
 
@@ -267,7 +275,7 @@ your answer here
 </ol>
 
 <div id="answer">
-your answer here
+Type your answer for Question 4 between the answer tags and delete this comment.
 
 
 </div>
@@ -280,13 +288,14 @@ your answer here
 <li> Independent observations: Classes sampled randomly, no order effect. </li>
 </ol>
 
-```{r diag-score-bty_avg}
-# type your code for the Question 5 here, and Knit
+```{r label = "diag-score-bty_avg", fig.width = 13.5}
+# Type your code for the Question 5 here, and Knit.
+# residual plot, Q-Q plot, and density plot of residuals
 
 ```
 
 <div id="answer">
-your answer here
+Type your answer for Question 5 between the answer tags and delete this comment.
 
 
 </div>
@@ -299,7 +308,7 @@ physical appearance of the professors. It also has a variable that is the averag
 examine the strength of the linear relationship between one of these scores 
 (`bty_f1lower`) and the average beauty score (`bty_avg`).
 
-```{r bty-rel}
+```{r label = "bty-rel"}
 ggplot(data = evals, aes(x = bty_f1lower, y = bty_avg)) +
   geom_jitter()
 # Correlation using cor()
@@ -309,7 +318,7 @@ cor(evals$bty_avg, evals$bty_f1lower)
 with(data = evals, cor(bty_avg, bty_f1lower))
 # 3. using a pipe
 evals %>% 
-  summarize(r = cor(bty_avg, bty_f1lower))
+  summarise(r = cor(bty_avg, bty_f1lower))
 ```
 
 As expected, the relationship is quite strong---after all, the average score is 
@@ -317,7 +326,7 @@ calculated using the individual scores. Figure \@ref(fig:bty-rels) depicts the
 relationships between all beauty variables (columns 13 through 19) using the 
 following command:
 
-```{r bty-rels, fig.width = 12, fig.height= 8, fig.cap = "GGpairs matrix scatterplot"}
+```{r label = "bty-rels", fig.width = 12, fig.height= 8, fig.cap = "GGpairs matrix scatterplot"}
 # Note: This is a painfully slow function!
 ggpairs(evals, columns = 13:19)
 ```
@@ -331,45 +340,48 @@ In order to see if beauty is still a significant predictor of professor score
 after we have accounted for the gender of the professor, we can add the gender 
 term into the model.
 
-```{r scatter-score-bty_avg_gender}
+```{r label = "scatter-score-bty_avg_gender"}
 m_bty_gen <- lm(score ~ bty_avg + gender, data = evals)
 summary(m_bty_gen)
 ```
 
 ```{r, label = "summMBTYGEN", echo = FALSE}
+options(table_counter = 1)
 htmlTable::htmlTable(round(summary(m_bty_gen)$coef, 4), css.cell = "padding-left: 1em; padding-right: 1em;", caption ="`score` regressed on `bty_avg` and `gender`", align = "rrrr")
 ```
 
-6. P-values and parameter estimates should only be trusted if the conditions for the regression are reasonable. Using diagnostic plots, we can conclude that the conditions for this model may be reasonable. 
+6. P-values and parameter estimates should only be trusted if the conditions for the regression are reasonable. Using diagnostic plots, we can conclude that the conditions for this model (`m_bty_gen`) may be reasonable. 
 <ol>
 <li> True </li>
 <li> False </li>
 </ol>
 
-```{r diag-mlr-model}
-# type your code to create appropriate diagnostic plots, and Knit
+```{r label = "diag-mlr-model", fig.width = 13.5}
+# Type your code to create appropriate diagnostic plots, and Knit.
+
 
 ```
 
 <div id="answer">
-your answer here
+Type your answer for Question 6 between the answer tags and delete this comment.
 
 
 </div>
 
 <div id="exercise">
-**Exercise:** Print a summary of the multiple linear regression model.  Is `bty_avg` 
+**Exercise 4:** Print a summary of the multiple linear regression model (`m_bty_gen`).  Is `bty_avg` 
 still a significant predictor of `score`?  Has the addition of `gender` to the 
 model changed the parameter estimate for `bty_avg`?
 </div>
 
-```{r summary-mlr-model}
-# type your code for the Exercise here, and Knit
+```{r label = "summary-mlr-model"}
+# Type your code for Exercise 4 here, and Knit.
+
 
 ```
 
 <div id="answer">
-your answer here
+Type your answer for Exercise 4 between the answer tags and delete this comment.
 
 
 </div>
@@ -398,7 +410,7 @@ the intercept and slope form familiar from simple regression.
 </ol>
 
 <div id="answer">
-your answer here
+Type your answer for Question 7 between the answer tags and delete this comment.
 
 
 </div>
@@ -409,19 +421,20 @@ alphabetically as a $0$. (You can change the reference level of a categorical
 variable, which is the level that is coded as a 0, using the`relevel` function; use `?relevel` to learn more.)
 
 <div id="exercise">
-**Exercise:** Create a new model called `m_bty_rank` with `gender` removed and 
+**Exercise 5:** Create a new model called `m_bty_rank` with `gender` removed and 
 `rank` added to the model.  How does R handle categorical variables that have 
 more than two levels? Note that the rank variable has three levels: teaching, 
 tenure track, and tenured.
 </div>
 
-```{r new-mlr-model}
-# type your code for the Exercise here, and Knit
+```{r label = "new-mlr-model"}
+# Type your code for Exercise 5 here, and Knit.
+
 
 ```
 
 <div id="answer">
-your answer here
+Type your answer for Exercise 5 between the answer tags and delete this comment.
 
 
 </div>
@@ -435,7 +448,8 @@ your answer here
 </ol>
 
 <div id="answer">
-your answer here
+Type your answer for Question 8 between the answer tags and delete this comment.
+
 
 
 </div>
@@ -458,7 +472,7 @@ fitted linear model.
 
 To compute the predicted value in R, create a new data frame for this professor.
 
-```{r new-prof}
+```{r label = "new-prof"}
 newprof <- data.frame(gender = "male", bty_avg = 3)
 ```
 
@@ -467,21 +481,21 @@ this variable is not used in our model.
 
 Then, I can do the prediction using the `predict` function:
 
-```{r new-prof-predict}
+```{r label = "new-prof-predict"}
 predict(m_bty_gen, newdata = newprof)
 ```
 
 We can also construct a prediction interval around this prediction, which will
 provide a measure of uncertainty around the prediction.
 
-```{r new-prof-predict-interval}
+```{r label = "new-prof-predict-interval"}
 PI <- predict(m_bty_gen, newdata = newprof, interval = "prediction", level = 0.95)
 PI
 ```
 
 The model predicts, with 95% confidence, that a male professor with an 
-average beauty score of 3 is expected to have an evaluation score between `r round(PI[2],4)` 
-and `r round(PI[3],4)`. 
+average beauty score of 3 is expected to have an evaluation score between `r PI[2]` 
+and `r PI[3]`. 
 
 ## The search for the best model {-}
 
@@ -492,19 +506,23 @@ number of professors, number of credits, average beauty rating, outfit, and
 picture color.
 
 <div id="exercise">
-Which variable would you expect to have the highest p-value in this model? Why? 
+**Think About**: Which variable would you expect to have the highest p-value in this model? Why? 
 *Hint:* Think about which variable would you expect to not have any association 
 with the professor score.
 </div>
 
 
-Let's run the model...
+Let us run the model...
 
 ```{r m_full, tidy = FALSE}
 m_full <- lm(score ~ rank + ethnicity + gender + language + age + cls_perc_eval 
              + cls_students + cls_level + cls_profs + cls_credits + bty_avg 
              + pic_outfit + pic_color, data = evals)
 summary(m_full)
+```
+
+```{r, label = "FULLMOD", echo = FALSE}
+htmlTable::htmlTable(round(summary(m_full)$coef, 4), css.cell = "padding-left: 1em; padding-right: 1em;", caption ="Full Model", align = "rrrr")
 ```
 
 
@@ -517,13 +535,13 @@ summary(m_full)
 </ol>
 
 <div id="answer">
-your answer here
+Type your answer for Question 9 between the answer tags and delete this comment.
 
 
 </div>
 
 <div id="exercise">
-**Exercise:** Drop the variable with the highest p-value and re-fit the model. 
+**Exercise 7:** Drop the variable with the highest p-value and re-fit the model. 
 Did the coefficients and significance of the other explanatory variables change? 
 (One of the things that makes multiple regression interesting is that coefficient 
 estimates depend on the other variables that are included in the model.) If not, 
@@ -531,13 +549,14 @@ what does this say about whether or not the dropped variable was collinear with
 the other explanatory variables?
 </div>
 
-```{r p-val-select}
-# type your code for the Exercise here, and Knit
+```{r label = "p-val-select"}
+# Type your code for Exercise 7 here, and Knit.
+
 
 ```
 
 <div id="answer">
-your answer here
+Type your answer for Exercise 7 between the answer tag and delete this comment.
 
 
 </div>
@@ -562,17 +581,18 @@ summary(m2)$adj.r.squared
 ```
 
 <div id="exercise">
-**Exercise:** Repeat this process until you have removed each variable, one at a time, 
+**Exercise 8:** Repeat this process until you have removed each variable, one at a time, 
 from the full model. Which variable yields the highest improvement in the adjusted $R^2$?
 </div>
 
-```{r adj-rsq-select}
-# type your code for the Exercise here, and Knit
+```{r label = "adj-rsq-select"}
+# Type your code for Exercise 8 here, and Knit.
+
 
 ```
 
 <div id="answer">
-your answer here
+Type your answer for Exercise 8 between the answer tags and delete this comment.
 
 
 </div>
@@ -587,7 +607,7 @@ your answer here
 </ol>
 
 <div id="answer">
-your answer here
+Type your answer for Question 10 between the answer tags and delete this comment.
 
 
 </div>
@@ -595,51 +615,50 @@ your answer here
 To complete the model selection, we would continue removing variables one at a 
 time until removal of another variable did not increase adjusted $R^2$.
 
-```{r final_model}
-# type your code for the Exercise here, and Knit
+```{r label = "final_model"}
+# Type your code for the final model, and Knit.
 
 ```
 
-**NOTE: using $R^2_{\text{adj}}$, the "final" model only drops `cls_profs`.**
 
 <div id="exercise">
-**Exercise:** The original paper describes how these data were gathered by taking 
+**Exercise 9:** The original paper describes how these data were gathered by taking 
 a sample of professors from the University of Texas at Austin and including all 
 courses that they have taught.  Considering that each row represents a course, 
 could this new information have an impact on any of the conditions of linear regression?
 </div>
 
 <div id="answer">
-your answer here
+Type your answer for Exercise 9 between the answer tags and delete this comment.
 
 
 </div>
 
 <div id="exercise">
-**Exercise:** Based on your final model, describe the characteristics of a 
+**Exercise 10:** Based on your final model, describe the characteristics of a 
 professor and course at University of Texas at Austin that would be associated 
 with a high evaluation score.
 </div>
 
 <div id="answer">
-your answer here
+Type your answer for Exercise 10 between the answer tags and delete this comment.
 
 
 
 </div>
 
 <div id="exercise">
-**Exercise:** Would you be comfortable generalizing your conclusions to apply 
+**Exercise 11:** Would you be comfortable generalizing your conclusions to apply 
 to professors generally (at any university)?  Why or why not?
 </div>
 
 <div id="answer">
-your answer here
+Type your answer for Exercise 11 between the answer tags and delete this comment.
 
 
 </div>
 
-```{r, sessioninfo}
+```{r, label = "sessioninfo"}
 sessionInfo()
 ```
 
